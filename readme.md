@@ -12,3 +12,5 @@ It uses dynamic equation written in matrix form to solve inverse dynamics
 and then simulate motion with direct dynamics.
 
  ![](robot_model.png)
+ 
+ It still has some ploblems with formulas (desired and real plots are not identical)

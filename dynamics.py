@@ -95,15 +95,19 @@ forces = np.zeros(shape=(2, time.shape[0]))
 
 for (i,), cur_time in np.ndenumerate(time):
     forces[:, i] = getM(q[:, i]).dot(q2dot[:, i]) + getC(q[:, i], qdot[:, i]) # + getG(q[:, i])
+    if np.abs(cur_time - 1) <= dt:
+        print(forces[:, i])
 
 plt.xlabel('time, s')
 plt.title('force M')
 plt.plot(time, forces[0, :])
+plt.savefig('plots/1st_joint_torque.png')
 plt.show()
 
 plt.xlabel('time, s')
 plt.title('force P')
 plt.plot(time, forces[1, :])
+plt.savefig('plots/2nd_joint_force.png')
 plt.show()
 
 ## simulation
@@ -130,36 +134,42 @@ plt.xlabel('time, s')
 plt.title('q1')
 plt.plot(time, q[0, :], 'g')
 plt.plot(time, q_real[0, :], 'r')
+plt.savefig('plots/1st_joint_position.png')
 plt.show()
 
 plt.xlabel('time, s')
 plt.title('q2')
 plt.plot(time, q[1, :], 'g')
 plt.plot(time, q_real[1, :], 'r')
+plt.savefig('plots/2nd_joint_position.png')
 plt.show()
 
 plt.xlabel('time, s')
 plt.title('q1 velocity')
 plt.plot(time, qdot[0, :], 'g')
 plt.plot(time, qdot_real[0, :], 'r')
+plt.savefig('plots/1st_joint_velocity.png')
 plt.show()
 
 plt.xlabel('time, s')
 plt.title('q2 velocity')
 plt.plot(time, qdot[1, :], 'g')
 plt.plot(time, qdot_real[1, :], 'r')
+plt.savefig('plots/2nd_joint_velocity.png')
 plt.show()
 
 plt.xlabel('time, s')
 plt.title('q1 acceleration')
 plt.plot(time, q2dot[0, :], 'g')
 plt.plot(time, q2dot_real[0, :], 'r')
+plt.savefig('plots/1st_joint_acceleration.png')
 plt.show()
 
 plt.xlabel('time, s')
 plt.title('q2 acceleration')
 plt.plot(time, q2dot[1, :], 'g')
 plt.plot(time, q2dot_real[1, :], 'r')
+plt.savefig('plots/2nd_joint_acceleration.png')
 plt.show()
 
 
