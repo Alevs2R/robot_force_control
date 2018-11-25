@@ -79,40 +79,65 @@ qdot = np.array([
 ])
 
 q2dot = np.array([
-    q1dot,
+    q1dotdot,
     getS2dot(q1, q1dot, q1dotdot)
 ])
 
 forces = np.zeros(shape=(2, time.shape[0]))
 
 for (i,), cur_time in np.ndenumerate(time):
-    print(q2dot[:, i].shape)
-    print(getM(q[:, i]).dot(q2dot[:, i]))
-    forces[:, i] = getM(q[:, i]).dot(q2dot[:, i]) + getC(q[:, i], qdot[:, i]) + getG(q[:, i])
+    forces[:, i] = getM(q[:, i]).dot(q2dot[:, i]) + getC(q[:, i], qdot[:, i]) # + getG(q[:, i])
 
 plt.xlabel('time, ms')
 plt.title('force M')
-plt.plot(time, forces[0, :], '-o')
+plt.plot(time, forces[0, :])
 plt.show()
 
 plt.xlabel('time, ms')
 plt.title('force P')
-plt.plot(time, forces[1, :], '-o')
+plt.plot(time, forces[1, :])
 plt.show()
 
-# plt.xlabel('time, ms')
-# plt.title('q')
-# plt.plot(time, q, '-o')
-# plt.show()
+## simulation
 
-# plt.xlabel('time, ms')
-# plt.title('q velocity')
-# plt.plot(time, qdot, '-o')
-# plt.show()
-#
-# plt.xlabel('time, ms')
-# plt.title('q acceleration')
-# plt.plot(time, qdotdot, '-o')
-# plt.show()
+q_real = np.zeros(shape=forces.shape)
+qdot_real = np.zeros(shape=forces.shape)
+q2dot_real = np.zeros(shape=forces.shape)
+
+q_real[:, 0] = np.array([q0, getS(q0)])
+
+for (i,), cur_time in np.ndenumerate(time):
+    if i == 0:
+        continue
+    q_current = q_real[:, i-1]
+    c_current = getC(q_current, qdot_real[:, i-1])
+    g_current = 0 #getG(q_current)
+    u = forces[:, i-1]
+    M_inv = np.linalg.inv(getM(q_current))
+    q2dot_real[:, i-1] = M_inv.dot(u - c_current - g_current)
+    qdot_real[:, i] = qdot_real[:, i-1] + q2dot_real[:, i-1] * dt
+    q_real[:, i] = q_real[:, i-1] + (qdot_real[:, i] + qdot_real[:, i-1]) / 2 * dt
+
+plt.xlabel('time, ms')
+plt.title('q1')
+plt.plot(time, q[0, :], 'g')
+plt.plot(time, q_real[0, :], 'r')
+plt.show()
+
+plt.xlabel('time, ms')
+plt.title('q2')
+plt.plot(time, q[1, :], 'g')
+plt.plot(time, q_real[1, :], 'r')
+plt.show()
+
+plt.xlabel('time, ms')
+plt.title('q2 velocity')
+plt.plot(time, qdot[1, :], 'g')
+plt.show()
+
+plt.xlabel('time, ms')
+plt.title('q2 acceleration')
+plt.plot(time, q2dot[1, :], 'g')
+plt.show()
 
 
