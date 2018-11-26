@@ -1,4 +1,4 @@
-#RobotForceControl
+# RobotForceControl
 
 Applying 2nd order Lagrange Equations to find
 forces and torgues providing controllable robot motions
