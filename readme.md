@@ -14,3 +14,8 @@ and then simulate motion with direct dynamics.
  ![](robot_model.png)
  
  It still has some ploblems with formulas (desired and real plots are not identical)
+ 
+ Script draws different plots. For example, 1st joint force (as function of time) and acceleration (desired green and simulated red).
+ 
+ ![](plots/1st_joint_torque.png)
+ ![](plots/1st_joint_acceleration.png)
